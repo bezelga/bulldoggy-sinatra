@@ -1,0 +1,9 @@
+<h1>Bulldoggy Tasks</h1>
+
+<ul>
+  <% @tasks.each do |task| %>
+    <li>
+      (<%= task[:id] %>) <%= task[:description] %>
+    </li>
+  <% end %>
+</ul>
