@@ -19,7 +19,6 @@
         <li>
         <input class="task-checkbox" type="checkbox" name="task-status" value="<%= task[:id] %>" <%= 'checked' if task[:done] %>>
           <%= task[:description] %>
-          <%= task[:done]%>
           <a href="#" class="remove-task" data-task-id="<%= task[:id] %>">X</a>
         </li>
       <% end %>
