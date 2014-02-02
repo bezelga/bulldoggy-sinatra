@@ -6,23 +6,19 @@ get '/' do
   erb :index
 end
 
-get '/add_task/:description' do
-  task = Bulldoggy.add_task params[:description]
-  "task added: #{task.id}"
-end
-
 post '/tasks' do
   Bulldoggy.add_task params[:description]
+  redirect to('/')
 end
 
 patch '/tasks/:id/check' do
-  Bulldoggy.check_task(params[:id])
+  Bulldoggy.check_task(params[:id].to_i)
 end
 
 patch '/tasks/:id/uncheck' do
-  Bulldoggy.uncheck_task(params[:id])
+  Bulldoggy.uncheck_task(params[:id].to_i)
 end
 
 delete '/tasks/:id' do
-  Bulldoggy.remove_task(params[:id])
+  Bulldoggy.remove_task(params[:id].to_i)
 end

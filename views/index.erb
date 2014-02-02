@@ -1,9 +1,60 @@
-<h1>Bulldoggy Tasks</h1>
+<!DOCTYPE HTML>
+<html>
+  <body>
+    <head>
+      <meta charset="UTF-8">
+      <title>Bulldoggy</title>
+      <script src="/jquery-1.11.0.min.js"></script>
+    </head>
 
-<ul>
-  <% @tasks.each do |task| %>
-    <li>
-      (<%= task[:id] %>) <%= task[:description] %>
-    </li>
-  <% end %>
-</ul>
+    <h1>Bulldoggy using web as delivery mechanism</h1>
+
+    <form action="/tasks" method="post">
+      <input type="text" name="description">
+      <input type="submit" name="add" value="Add">
+    </form>
+
+    <ul>
+      <% @tasks.each do |task| %>
+        <li>
+        <input class="task-checkbox" type="checkbox" name="task-status" value="<%= task[:id] %>" <%= 'checked' if task[:done] %>>
+          <%= task[:description] %>
+          <%= task[:done]%>
+          <a href="#" class="remove-task" data-task-id="<%= task[:id] %>">X</a>
+        </li>
+      <% end %>
+    </ul>
+
+    <script>
+      // TODO: move to a js file
+      $(document).ready(function(){
+        $('.remove-task').click(function() {
+          var taskId = $(this).data('task-id');
+          $.ajax({
+              url: '/tasks/' + taskId,
+              type: 'DELETE',
+              success: function(result) {
+                window.location = '/';
+              }
+          });
+        });
+
+      $('.task-checkbox').click(function() {
+        var action, taskId;
+        taskId = $(this).val();
+        if ($(this).is(':checked'))
+          action = 'check';
+        else
+          action = 'uncheck';
+        $.ajax({
+            url: '/tasks/' + taskId + '/' + action,
+            type: 'PATCH',
+            success: function(result) {
+              window.location = '/';
+            }
+        });
+      });
+    });
+    </script>
+  </body>
+</html>
