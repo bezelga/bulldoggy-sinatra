@@ -17,8 +17,8 @@
     <ul>
       <% @tasks.each do |task| %>
         <li>
-        <input class="task-checkbox" type="checkbox" name="task-status" value="<%= task[:id] %>" <%= 'checked' if task[:done] %>>
-          <%= task[:description] %>
+          <input class="task-checkbox" type="checkbox" name="task-status" value="<%= task[:id] %>" <%= 'checked' if task[:done] %>>
+          <span id="task-description-<%= task[:id] %>"><%= task[:description] %></span>
           <a href="#" class="remove-task" data-task-id="<%= task[:id] %>">X</a>
         </li>
       <% end %>
@@ -27,6 +27,7 @@
     <script>
       // TODO: move to a js file
       $(document).ready(function(){
+        // removes task
         $('.remove-task').click(function() {
           var taskId = $(this).data('task-id');
           $.ajax({
@@ -38,6 +39,14 @@
           });
         });
 
+      // adds line through to done task
+      $('.task-checkbox').each(function() {
+        if ($(this).is(':checked'))
+          var taskId = $(this).val();
+          $('#task-description-' +  taskId).css('text-decoration', 'line-through');
+      });
+
+      // changes the done status of the task
       $('.task-checkbox').click(function() {
         var action, taskId;
         taskId = $(this).val();
